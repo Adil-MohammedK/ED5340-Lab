@@ -1,3 +1,6 @@
+# @author: Adil Mohammed K
+# TODO: 
+
 list_str= ['hello','I','am','Adil']
 
 print(len(list_str))
@@ -28,3 +31,29 @@ elif b>c:
     print("big is b:",b)
 else:
     print("big is c: ",c)
+str=[[1,2,3,4],[5,6,7,8]]
+print("arr=: ",str,"*arr=: ",*str)
+print("arr[0]",str[0],"arr[1]",str[1])
+print("*arr[0]",*str[0])
+
+# lst=[[x,x**2,x**3] for x in range(10)]
+# print(lst)
+lst=[]
+for x in range(10):
+    lst.append([x,x**2,x**3])
+print(lst)
+
+lst3=[x for x in range(10) if x%2==0]
+print(lst3)
+
+# st5=[int(num) for num in input().split()]
+# print(st5)
+
+# List of list
+lst4=[[x,x+5] for x in range(10)]
+print(lst4)
+
+lst5=[]
+for x in range(10):
+    lst5.append([x,x+5])
+print(lst5)
