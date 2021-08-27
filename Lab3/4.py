@@ -1,5 +1,5 @@
-matrix1 = [[x,x+5] for x in range(1,10) if x%2==0]
-matrix2 = [[x,x+7] for x in range(1,10) if x%2!=0]
+matrix1 = [[x, x + 5] for x in range(1, 10) if x % 2 == 0]
+matrix2 = [[x, x + 7] for x in range(1, 10) if x % 2 != 0]
 
 print("Original matrices: ")
 print(matrix1)
@@ -19,8 +19,8 @@ print(mat1)
 print(mat2)
 
 
-matrix1 = [[1, 4, 4], [45, 15, 53], [65, 13, 12] ]
-matrix2 = [[31, 13, 45], [51, 13, 35], [56, 38, 9] ]
+matrix1 = [[1, 4, 4], [45, 15, 53], [65, 13, 12]]
+matrix2 = [[31, 13, 45], [51, 13, 35], [56, 38, 9]]
 print("Original matrices: ")
 print(matrix1)
 print(matrix2)
@@ -33,7 +33,7 @@ list3 = list(zipped2)
 zipped3 = zip(list2, list3)
 list5 = list(zipped3)
 
-#interchanging columns
+# interchanging columns
 a = list(list5[0][0])
 b = list(list5[0][1])
 a, b = b, a
@@ -48,5 +48,3 @@ list_22 = list(rect2)
 print("Swapped columns: ")
 print(list_11)
 print(list_22)
-
-

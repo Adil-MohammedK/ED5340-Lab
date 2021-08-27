@@ -10,13 +10,14 @@ def duplicate_item(x):
                 duplicate.append(x[i])
     return duplicate
 
-list=[]
-n=int(input("How many nums needed: "))
+
+list = []
+n = int(input("How many nums needed: "))
 
 print("Enter number for list: ")
-for i in range(1,n+1):
+for i in range(1, n + 1):
     list.append(int(input()))
-print("List: ",list)
+print("List: ", list)
 print("Removing repeated numbers")
 new_list = duplicate_item(list)
 # for i in list:
@@ -39,4 +40,4 @@ new_list = duplicate_item(list)
 #     if flag==True:
 #         new_list.append(comp)
 
-print("new list: ",new_list)
+print("new list: ", new_list)

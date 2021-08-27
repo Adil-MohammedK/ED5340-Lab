@@ -9,30 +9,30 @@
 
 import copy
 
-list1=[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-print("list1: ",list1)
-list2= list(list1)
-print("List2: ",list2)
-list1.append([3,4])
-print("list1: ",list1)
-print("List2: ",list2)
+list1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print("list1: ", list1)
+list2 = list(list1)
+print("List2: ", list2)
+list1.append([3, 4])
+print("list1: ", list1)
+print("List2: ", list2)
 # Here changes to list1 doesn not change list2
 
-list1[1][0] = 'X'
-print("list1: ",list1)
-print("List2: ",list2)
+list1[1][0] = "X"
+print("list1: ", list1)
+print("List2: ", list2)
 # Here the child of the list changes
 # Deep copying
 
 
 list3 = copy.deepcopy(list1)
-print("list1: ",list1)
-print("list3: ",list3)
+print("list1: ", list1)
+print("list3: ", list3)
 list1.append(14)
-print("list1: ",list1)
-print("list3: ",list3)
-list1[2][0] = 'X'
-print("list1: ",list1)
-print("List3: ",list3)
+print("list1: ", list1)
+print("list3: ", list3)
+list1[2][0] = "X"
+print("list1: ", list1)
+print("List3: ", list3)
 
 # Here no change happens to list3
