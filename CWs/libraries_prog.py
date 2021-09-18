@@ -17,7 +17,15 @@ print(arr.itemsize, arr.strides)
 import matplotlib.pyplot as plt
 
 x = np.linspace(-5, 5, 100)
-y = x ** 3
+y = x ** 4
 
 plt.plot(x, y, color="red")
 plt.show()
+
+# plt.subplots()
+x = np.arange(-2.0, 2.0, 0.1)
+y = np.arange(-2.0, 2.0, 0.1)
+X, Y = np.meshgrid(x, y)
+Z = X ** 2 + Y ** 2
+fig = plt.figure()
+ax = fig.add_subplot()
