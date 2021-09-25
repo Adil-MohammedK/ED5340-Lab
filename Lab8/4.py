@@ -135,6 +135,13 @@ def gradDescent(Func, xinit, yinit, iter, limit1, limit2):
         # Find the optimal x and y values
         x_opt, y_opt = sp + alpha_opt * sd
 
+        delJ = np.array(
+            [
+                partial_derivative_x_y(fstr, "x", (sp[0], sp[1])),
+                partial_derivative_x_y(fstr, "y", (sp[0], sp[1])),
+            ]
+        )
+
         if fabs(sqrt(delJ[0] ** 2 + delJ[1] ** 2)) <= limit1:
             break
         elif x > iter:
@@ -159,7 +166,7 @@ def gradDescent(Func, xinit, yinit, iter, limit1, limit2):
 
         # Mark optimal point
         ax.plot(x_opt, y_opt, "ko")
-        ax.annotate(f"Next point, alpha=({round(alpha_opt, 2)})", (x_opt, y_opt))
+        ax.annotate(f"Next point, alpha=({round(alpha_opt, 3)})", (x_opt, y_opt))
         # Draw search direction
         points = np.array([sp + a * sd for a in range(2)])
         ax.plot(points[:, 0], points[:, 1], "b--")
