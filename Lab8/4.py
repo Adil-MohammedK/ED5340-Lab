@@ -1,4 +1,3 @@
-from re import X
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.misc import derivative
@@ -42,17 +41,14 @@ def plotContour(Func, xlimit, ylimit, title="Contour plot"):
     plt.show()
 
 
-def find_f_sv(f_mv, start, drx):
+def get_param(f_mv, start, drx):
     def parametric(alpha):
         return f_mv(*(start + alpha * drx))
 
     return parametric
 
 
-# calculating its derivative
-
-
-def exhaustive_search(obj, a=-100, b=100, n=10):
+def bracket_search(obj, a=-100, b=100, n=10):
     x1 = a
     dx = (b - a) / n
     x2 = x1 + dx
@@ -82,6 +78,7 @@ def interval_halving(obj, a, b, errlim=1e-5):
     return (a + b) / 2
 
 
+# calculating partial derivative
 def partial_derivative_x_y(ginput, der_var, val):
 
     x, y = sp.symbols("x y")
@@ -96,8 +93,8 @@ def partial_derivative_x_y(ginput, der_var, val):
 
 def gradDescent(Func, xinit, yinit, iter, limit1, limit2):
 
-    sp = np.array([xinit, yinit])
-    sd = np.array(
+    s_point = np.array([xinit, yinit])
+    s_dirn = np.array(
         [
             -partial_derivative_x_y(fstr, "x", (xinit, yinit)),
             -partial_derivative_x_y(fstr, "y", (xinit, yinit)),
@@ -120,25 +117,25 @@ def gradDescent(Func, xinit, yinit, iter, limit1, limit2):
     plt.title("Contour plot")
     plt.suptitle("3D graphs with contour")
     # Mark start point
-    ax.plot(*sp, "ko")
-    ax.annotate("Start point", sp)
+    ax.plot(*s_point, "ko")
+    ax.annotate(f"Point 0 at {(s_point[0],s_point[1])}", s_point)
     for x in range(iter):
 
-        # ax.plot(*sp, "ko")
-        # ax.annotate("Start point", sp)
+        # ax.plot(*s_point, "ko")
+        # ax.annotate("Start point", s_point)
 
-        f_sv = find_f_sv(Func, sp, sd)
-        # Upper and lower bounds of alpha
-        found, (a, b) = exhaustive_search(f_sv, n=100)
+        f_sv = get_param(Func, s_point, s_dirn)
+        # crude bounds of alpha
+        found, (a, b) = bracket_search(f_sv, n=100)
         # optimal value of alpha
         alpha_opt = interval_halving(f_sv, a, b)
         # Find the optimal x and y values
-        x_opt, y_opt = sp + alpha_opt * sd
+        x_opt, y_opt = s_point + alpha_opt * s_dirn
 
         delJ = np.array(
             [
-                partial_derivative_x_y(fstr, "x", (sp[0], sp[1])),
-                partial_derivative_x_y(fstr, "y", (sp[0], sp[1])),
+                partial_derivative_x_y(fstr, "x", (s_point[0], s_point[1])),
+                partial_derivative_x_y(fstr, "y", (s_point[0], s_point[1])),
             ]
         )
 
@@ -147,35 +144,37 @@ def gradDescent(Func, xinit, yinit, iter, limit1, limit2):
         elif x > iter:
             break
 
-        x_new = sp[0] + alpha_opt * sd[0]
-        y_new = sp[1] + alpha_opt * sd[1]
+        x_new = s_point[0] + alpha_opt * s_dirn[0]
+        y_new = s_point[1] + alpha_opt * s_dirn[1]
 
         if (
             fabs(
                 sqrt(
                     partial_derivative_x_y(fstr, "x", (x_new, y_new)) ** 2
-                    + partial_derivative_x_y(fstr, "y", (sp[0], sp[1])) ** 2
+                    + partial_derivative_x_y(fstr, "y", (s_point[0], s_point[1])) ** 2
                 )
             )
             <= limit2
         ):
             break
 
-        if (fabs(sqrt((x_new - sp[0]) ** 2 + (y_new - sp[1]) ** 2)) / sqrt(sp[1] ** 2 + sp[1] ** 2)) <= limit1:
+        if (
+            fabs(sqrt((x_new - s_point[0]) ** 2 + (y_new - s_point[1]) ** 2)) / sqrt(s_point[1] ** 2 + s_point[1] ** 2)
+        ) <= limit1:
             break
 
         # Mark optimal point
         ax.plot(x_opt, y_opt, "ko")
-        ax.annotate(f"Next point, alpha=({round(alpha_opt, 3)})", (x_opt, y_opt))
+        ax.annotate(f"point {(x+1)} at {(x_opt,y_opt)}, alpha=({round(alpha_opt, 3)})", (x_opt, y_opt))
         # Draw search direction
-        points = np.array([sp + a * sd for a in range(2)])
+        points = np.array([s_point + a * s_dirn for a in range(2)])
         ax.plot(points[:, 0], points[:, 1], "b--")
 
-        sp = np.array([x_new, y_new])
-        sd = np.array(
+        s_point = np.array([x_new, y_new])
+        s_dirn = np.array(
             [
-                -partial_derivative_x_y(fstr, "x", (sp[0], sp[1])),
-                -partial_derivative_x_y(fstr, "y", (sp[1], sp[1])),
+                -partial_derivative_x_y(fstr, "x", (s_point[0], s_point[1])),
+                -partial_derivative_x_y(fstr, "y", (s_point[1], s_point[1])),
             ]
         )
 

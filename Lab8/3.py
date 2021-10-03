@@ -32,26 +32,26 @@ def plotContour(Func, xlimit, ylimit, title="Contour plot"):
     plt.title(title)
     plt.suptitle("3D graphs with contour")
     # Mark start point
-    ax.plot(*sp, "ko")
-    ax.annotate("Start point", sp)
+    ax.plot(*s_point, "ko")
+    ax.annotate("Start point", s_point)
     # Mark optimal point
     ax.plot(x_opt, y_opt, "ko")
     ax.annotate(f"Optimal point, alpha=({round(alpha_opt, 2)})", (x_opt, y_opt))
     # Draw search direction
-    points = np.array([sp + a * sd for a in range(4)])
+    points = np.array([s_point + a * s_dirn for a in range(4)])
     ax.plot(points[:, 0], points[:, 1], "b--")
 
     plt.show()
 
 
-def find_f_sv(f_mv, start, drx):
+def get_param(f_mv, start, drx):
     def parametric(alpha):
         return f_mv(*(start + alpha * drx))
 
     return parametric
 
 
-def exhaustive_search(obj, a=-100, b=100, n=10):
+def bracket_search(obj, a=-100, b=100, n=10):
     x1 = a
     dx = (b - a) / n
     x2 = x1 + dx
@@ -81,20 +81,19 @@ def interval_halving(obj, a, b, errlim=1e-5):
     return (a + b) / 2
 
 
-# Given Start point
-sp = np.array([2, 1])
-# Given Search direction
-sd = np.array([2, 5])
+# My Starting point
+s_point = np.array([2, 1])
+# My Search direction
+s_dirn = np.array([2, 5])
 
-# Multivariable optimisation problem converted to single variable optimisation
-f_sv = find_f_sv(f1, sp, sd)
-# Upper and lower bounds of alpha
-found, (a, b) = exhaustive_search(f_sv, n=100)
-# optimal value of alpha
-alpha_opt = interval_halving(f_sv, a, b)
+alpha_fun = get_param(f1, s_point, s_dirn)
+# Find Crude bounds
+found, (a, b) = bracket_search(alpha_fun, n=100)
+# find optimal value of alpha
+alpha_opt = interval_halving(alpha_fun, a, b)
 # Find the optimal x and y values
-x_opt, y_opt = sp + alpha_opt * sd
-print(f"Optimal value is {(x_opt, y_opt)}")
+x_opt, y_opt = s_point + alpha_opt * s_dirn
+print("Optimal value is ", x_opt, y_opt)
 
 
 plot3D(f1, 30, 30)
