@@ -69,6 +69,7 @@ class LogisticRegression(object):
         self.AllBiases = np.zeros((numberOfEpochs, x.shape[1]))
         self.AllCosts = np.zeros((numberOfEpochs, x.shape[1]))
         self.All_cl = np.zeros((numberOfEpochs, len(x)))  # cl: # predicted y-values for connection lines
+        self.iterations = numberOfEpochs
 
         for step in range(numberOfEpochs):
             # for each step of gradient descent assign new parameter value to respective array element:
@@ -235,6 +236,15 @@ class LogisticRegression(object):
 
         plt.show()
 
+    def plotCostIter(self):
+        c = self.AllCosts
+        x = np.arange(0, self.iterations, 1)
+        plt.plot(x, c)
+        plt.xlabel("Iterations")
+        plt.ylabel("Cost")
+        plt.title("Cost vs Iterations")
+        plt.show()
+
 
 # In[2]
 my_data = pd.read_csv("Logistic_regression_ls.csv")
@@ -252,7 +262,7 @@ xs = np.array([np.linspace(-150, 200)])  # x-values later used for regression cu
 
 # Fit model to training data:
 model = LogisticRegression(x_train, y_train, lr=0.01)  # set up model and define learning rate
-model.fit(x_train, y_train, numberOfEpochs=10000)  # set number of epochs
+model.fit(x_train, y_train, numberOfEpochs=50000)  # set number of epochs
 
 # Print results:
 print("Final weight: ")
@@ -263,6 +273,7 @@ print("Final costs: " + str(model.cost(x_train, y_train)))
 model.fitDataPlot()
 model.plotCostCurve()
 model.plotCostContour()
+model.plotCostIter()
 
 # In[4]
 
@@ -277,3 +288,4 @@ print("Final MSD costs: " + str(model2.cost(x_train, y_train)))
 model2.fitDataPlot()
 model2.plotCostCurve()
 model2.plotCostContour(levels=[0.2, 0.3, 0.6, 0.7, 0.8, 1, 1.5, 2, 3, 4])
+model2.plotCostIter()
